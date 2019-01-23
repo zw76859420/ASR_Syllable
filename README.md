@@ -23,9 +23,11 @@ difflib<br>
   (1)构建类似VGG网络架构，Conv-BN-Conv-BN-Maxpool-Dropout<br>
   (2)采用MNIST数据集构建Densenet网络架构，自己可以直接把Densenet网络架构用于声学模型；<br>
   (3)为了解决CTC在最后Dense层分类无法捕捉前后信息，我对Dense层加入了Attention机制，代码如下：
+  '''python
         ####融入了attention机制于全连接层；<br>
         dense1 = Dense(units=512, activation='relu', use_bias=True, kernel_initializer='he_normal')(reshape)<br>
-        attention_prob = Dense(units=512, activation='softmax', name='attention_vec')(dense1)<br><br>
+        attention_prob = Dense(units=512, activation='softmax', name='attention_vec')(dense1)<br>
         attention_mul = multiply([dense1, attention_prob])<br>
         dense1 = BatchNormalization(epsilon=0.0002)(attention_mul)<br>
         dense1 = Dropout(0.3)(dense1)<br>
+   '''
