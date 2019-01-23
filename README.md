@@ -16,4 +16,5 @@ difflib<br>
 ## 算法框架
   采用DCNN-CTC构建语音识别声学模型；<br>
   CTC损失函数介绍可以观看本人的博客；<br>
-  
+  [CTC原理介绍]（https://blog.csdn.net/Xwei1226/article/details/80969250 "悬停显示"）;<br>
+  [CTC损失函数推到](https://blog.csdn.net/Xwei1226/article/details/80889818 "悬停显示");<br>
