@@ -37,4 +37,5 @@ difflib<br>
   Densenet-CTC:SER=31.23%，优化之前为SER=32.27%<br>
   DCNN-Attention-CTC:SER=24.32%<br>
 ## 实验改进
-  欢迎各位同行对本声学模型提供宝贵建议；
+  欢迎各位同行对本声学模型提供宝贵建议；<br>
+  [个人博客](https://blog.csdn.net/Xwei1226 "悬停显示") 包含自己近期的学习总结
