@@ -136,7 +136,7 @@ def pinzhen_fbank(file_path , n_context=1):
     '''
        这里涉及跳帧处理，隔一帧，取一列特征;
     '''
-    # origin_inputs = origin_inputs[::2]
+    origin_inputs = origin_inputs[::2]
     # print(origin_inputs)
     '''
        初始化最后提取的总特征维度;
@@ -178,6 +178,10 @@ def pinzhen_fbank(file_path , n_context=1):
         future = np.reshape(future , n_context * n_input)
 
         train_inputs[time_slice] = np.concatenate((past , now , future))
+    '''
+       可以做一下均值归一化，将数据服从正太分布标准，减去均值再除以方差;
+    '''
+    train_inputs = (train_inputs - np.mean(train_inputs)) / np.std(train_inputs)
 
     return train_inputs
 
@@ -185,7 +189,7 @@ def pinzhen_fbank(file_path , n_context=1):
 if __name__ == '__main__':
     file_path = '/home/zhangwei/Desktop/D4_751.wav'
     # a = pinzhen_spectrogram(file_path , n_context=1)
-    freimg = pinzhen_spectrogram(file_path ,n_context=1)
+    freimg = pinzhen_fbank(file_path ,n_context=1)
     freimg = freimg
 
     plt.subplot(111)
@@ -194,4 +198,4 @@ if __name__ == '__main__':
     plt.show()
     # a = pinzhen_fbank(file_path)
     # print(a.shape)
-    print(freimg)
+    print(freimg.shape)

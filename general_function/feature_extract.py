@@ -12,7 +12,7 @@ from python_speech_features import logfbank
 from scipy.fftpack import fft
 
 def read_wav_data(filename):
-    wav = wave.open(filename , 'rb')
+    wav = wave.open(filename, 'rb')
     num_frames = wav.getnframes()
     num_channel = wav.getnchannels()
     framerate = wav.getframerate()
@@ -34,9 +34,9 @@ def get_frequency_feature(wavsignal , fs):
     window_length = fs / 1000 * time_window
     wav_arr = np.array(wavsignal)
     wav_length = wav_arr.shape[1]
-    range0_end = (int(len(wavsignal[0]) / fs * 1000 - time_window) // 10) // 2
+    range0_end = int(len(wavsignal[0]) / fs * 1000 - time_window) // 10
     data_input = np.zeros((range0_end , 200) , dtype=np.float)
-    data_line = np.zeros((1,400) , dtype=np.float)
+    data_line = np.zeros((1,400), dtype=np.float)
     # print(range0_end)
     for i in range(0 , range0_end):
         p_start = i * 160
@@ -50,20 +50,20 @@ def get_frequency_feature(wavsignal , fs):
     return data_input
 
 if __name__ == '__main__':
-    filename = '/home/zhangwei/D4_750.wav'
+    filename = '/home/zhangwei/Desktop/D4_750.wav'
     filename_01 = '/home/zhangwei/01.wav'
-    wavsignal , fs = read_wav_data(filename_01)
+    wavsignal, fs = read_wav_data(filename)
     # print(wavsignal[0].shape)
-    # wavsignal = get_frequency_feature(wavsignal , fs)
-    # print(wavsignal)
+    wavsignal = get_frequency_feature(wavsignal, fs)
+    print(wavsignal.shape)
 
-    freimg = get_frequency_feature(wavsignal , fs)
-    freimg = freimg.T
-
-    plt.subplot(111)
-    plt.imshow(freimg)
-    plt.colorbar(cax=None , ax=None , shrink=0.5)
-    plt.show()
+    # freimg = get_frequency_feature(wavsignal, fs)
+    # freimg = freimg.T
+    #
+    # plt.subplot(111)
+    # plt.imshow(freimg)
+    # plt.colorbar(cax=None , ax=None , shrink=0.5)
+    # plt.show()
     # print(len(wavsignal[0]))
     # plt.specgram(wavsignal , NFFT=1024 , Fs=16000)
     # plt.colorbar(cax=None , ax=None , shrink=0.5)
