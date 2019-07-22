@@ -30,5 +30,5 @@
 ## 参考项目连接<br>
 [个人博客](https://blog.csdn.net/Xwei1226 "悬停显示") 包含自己近期的学习总结<br>
 [参考链接](https://github.com/nl8590687/ASRT_SpeechRecognition "悬停显示")<br>
-[(2)ASR_WORD](https://github.com/zw76859420/ASR_WORD "悬停显示")以字为建模单元构建语音识别声学模型<br>
+[ASR_WORD](https://github.com/zw76859420/ASR_WORD "悬停显示")以字为建模单元构建语音识别声学模型<br>
 
