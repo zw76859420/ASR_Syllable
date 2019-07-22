@@ -85,7 +85,7 @@ class DataSpeech():
             for i in range(batch_size):
                 ran_num = random.randint(0 , self.datanum - 1)
                 data_input , data_labels = self.get_data(ran_num)
-                input_length.append([data_input.shape[0]//8])
+                input_length.append([data_input.shape[0]//16])
                 X[i , 0 : len(data_input)] = data_input
                 y[i , 0 : len(data_labels)] = data_labels
                 label_length.append([len(data_labels)])

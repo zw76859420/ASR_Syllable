@@ -23,13 +23,14 @@ from keras.layers import Conv2D , MaxPooling2D , Lambda , Activation , regulariz
 from keras.layers.normalization import BatchNormalization
 from keras import backend as K
 from keras.optimizers import SGD , Adadelta , Adam
+from keras.layers.advanced_activations import ELU, LeakyReLU
 
 from readdata_17 import DataSpeech
 
 class ModelSpeech():
     def __init__(self , datapath):
         MS_OUTPUT_SIZE = 1422
-        k = 12
+        k = 8
         self.MS_OUTPUT_SIZE = MS_OUTPUT_SIZE
         self.label_max_string_length = 64
         self.AUDIO_LENGTH = 1600
@@ -47,6 +48,7 @@ class ModelSpeech():
         k = self.k
         input_data = Input(shape=[self.AUDIO_LENGTH , self.AUDIO_FEATURE_LENGTH , 1] , name='Input')
         conv1 = Conv2D(filters=k * 2, kernel_size=[4,1] , padding='same' , use_bias=True , kernel_initializer='he_normal')(input_data)
+        conv1 = BatchNormalization()(conv1)
         x = MaxPooling2D(pool_size=[2 , 1] , strides=[2 , 1])(conv1)
 
         b1_1 = self.dense_block(x, k)
@@ -85,22 +87,22 @@ class ModelSpeech():
         b3_5_conc = concatenate([transion_2, b3_1 , b3_2 , b3_3 , b3_4 , b3_5], axis=-1)
         transion_3 = self.transition_layer(b3_5_conc, k)
 
-        reshape_layer = Reshape([100 , 300])(transion_3)
-        dense1 = Dense(units=256 , use_bias=True , kernel_initializer='he_normal')(reshape_layer)
-        dense1 = BatchNormalization()(dense1)
-        dense1 = Activation(activation='relu')(dense1)
-        dense1 = Dropout(rate=0.1)(dense1)
-        dense2 = Dense(units=512 , use_bias=True , kernel_initializer='he_normal')(dense1)
+        reshape_layer = Reshape([100 , 200])(transion_3)
+        # dense1 = Dense(units=256 , use_bias=True , kernel_initializer='he_normal')(reshape_layer)
+        # dense1 = BatchNormalization()(dense1)
+        # dense1 = Activation(activation='relu')(dense1)
+        # dense1 = Dropout(rate=0.1)(dense1)
+        dense2 = Dense(units=1024 , use_bias=True , kernel_initializer='he_normal')(reshape_layer)
         dense2 = BatchNormalization()(dense2)
         dense2 = Activation(activation='relu')(dense2)
-        dense2 = Dropout(rate=0.1)(dense2)
+        dense2 = Dropout(rate=0.2)(dense2)
         dense3 = Dense(units=self.MS_OUTPUT_SIZE , use_bias=True)(dense2)
         y_pred = Activation(activation='softmax')(dense3)
 
         model_data = Model(inputs=input_data , outputs=y_pred)
 
-        # model_data.summary()
-        # plot_model(model_data , '/home/zhangwei/01.png' , show_shapes=True)
+        model_data.summary()
+        plot_model(model_data , '/home/zhangwei/01.png' , show_shapes=True)
 
         labels = Input(shape=[self.label_max_string_length], name='labels', dtype='float32')
         input_length = Input(shape=[1], name='input_length', dtype='int64')
@@ -109,7 +111,7 @@ class ModelSpeech():
         model = Model(inputs=[input_data, labels, input_length, label_length], outputs=loss_out)
         sgd = SGD(lr=0.00001, decay=1e-6, momentum=0.9, nesterov=True, clipnorm=5)
         ada_d = Adadelta(lr=0.0005 , rho=0.95, epsilon=1e-6)
-        adam = Adam(lr=0.001 , epsilon=1e-6)
+        adam = Adam(lr=0.001, epsilon=1e-6, decay=10e-3)
 
         model.compile(optimizer=adam , loss={'ctc': lambda y_true, y_pred: y_pred})
 

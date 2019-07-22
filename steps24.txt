@@ -1,0 +1,1 @@
+/home/zhangwei/speech_model/speech_model_e_0_step_86000

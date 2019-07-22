@@ -1,29 +1,74 @@
 #-*- coding:utf-8 -*-
 #author:zhangwei
 
-from speech_model_18 import *
+from sk_mcnn_01 import *
 from model_language import ModelLanguage
+from time import time
 
 modelpath_ml = '/home/zhangwei/PycharmProjects/ASR_Thchs30/model_language/'
 datapath = '/home/zhangwei/PycharmProjects/ASR_Thchs30/data_list/'
 modelpath = '/home/zhangwei/speech_model/'
 
 ms = ModelSpeech(datapath)
-ms.load_model(modelpath + 'speech_model_e_0_step_200000.model')
+ms.load_model(modelpath + 'speech_model_e_0_step_70000.model')
 r1 = ms.recognize_speech_fromfile(filename='/home/zhangwei/Desktop/D4_750.wav')
 print(r1)
-ms.test_model(datapath=datapath , str_dataset='test' , data_count=100)
-print('=====================1==================================')
 
-# for i in range(1000 , 20000):
+# t1 = time()
+# r2 = ms.recognize_speech_fromfile(filename='/home/zhangwei/Desktop/D4_751.wav')
+# print(r2)
+# t2 = time()
+# print(t2-t1)
+t1 = time()
+ms.test_model(datapath=datapath , str_dataset='test',  data_count=100)
+print('=====================2==================================')
+t2 = time()
+print(t2-t1)
+
+# ms = ModelSpeech(datapath)
+# ms.load_model(modelpath + 'speech_model_e_0_step_18000.model')
+# r1 = ms.recognize_speech_fromfile(filename='/home/zhangwei/Desktop/D4_750.wav')
+# print(r1)
+# ms.test_model(datapath=datapath , str_dataset='test',  data_count=100)
+# print('=====================3==================================')
+#
+# ms = ModelSpeech(datapath)
+# ms.load_model(modelpath + 'speech_model_e_0_step_17000.model')
+# r1 = ms.recognize_speech_fromfile(filename='/home/zhangwei/Desktop/D4_750.wav')
+# print(r1)
+# ms.test_model(datapath=datapath , str_dataset='test',  data_count=100)
+# print('=====================4==================================')
+#
+# ms = ModelSpeech(datapath)
+# ms.load_model(modelpath + 'speech_model_e_0_step_16000.model')
+# r1 = ms.recognize_speech_fromfile(filename='/home/zhangwei/Desktop/D4_750.wav')
+# print(r1)
+# ms.test_model(datapath=datapath , str_dataset='test',  data_count=100)
+# print('=====================5==================================')
+#
+# ms = ModelSpeech(datapath)
+# ms.load_model(modelpath + 'speech_model_e_0_step_15000.model')
+# r1 = ms.recognize_speech_fromfile(filename='/home/zhangwei/Desktop/D4_750.wav')
+# print(r1)
+# ms.test_model(datapath=datapath , str_dataset='test',  data_count=100)
+# print('=====================6==================================')
+#
+# ms = ModelSpeech(datapath)
+# ms.load_model(modelpath + 'speech_model_e_0_step_14000.model')
+# r1 = ms.recognize_speech_fromfile(filename='/home/zhangwei/Desktop/D4_750.wav')
+# print(r1)
+# ms.test_model(datapath=datapath , str_dataset='test',  data_count=100)
+# print('=====================7==================================')
+
+# for i in range(1000 , 89000):
 #     if i % 1000 == 0:
 #         ms = ModelSpeech(datapath)
 #         ms.load_model(modelpath + 'speech_model_e_0_step_' + str(i) + '.model')
 #         r1 = ms.recognize_speech_fromfile(filename='/home/zhangwei/Desktop/D4_750.wav')
 #         print(r1)
 #         ms.test_model(datapath=datapath , str_dataset='test' , data_count=100)
-#         print(i)
-#         print('=====================1==================================')
+#         # print(i)
+#         print('====================='+str(i)+'==================================')
 
 # ms = ModelSpeech(datapath)
 # ms.load_model(modelpath + 'speech_model_e_0_step_13000.model')

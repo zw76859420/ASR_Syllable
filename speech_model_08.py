@@ -42,35 +42,35 @@ class ModelSpeech():
 
     def creat_model(self):
         input_data = Input(shape=[self.AUDIO_LENGTH , self.AUDIO_FEATURE_LENGTH , 1] , name='Input')
-        conv1 = Conv2D(filters=32 , kernel_size=[3,3] , padding='same' , activation='relu' , use_bias=True , kernel_initializer='he_normal' , kernel_regularizer=regularizers.l2(1e-4))(input_data)
+        conv1 = Conv2D(filters=32 , kernel_size=[3,3] , padding='same' , activation='relu' , use_bias=True, kernel_initializer='he_normal')(input_data)
         conv1 = BatchNormalization(epsilon=0.0002)(conv1)
-        conv2 = Conv2D(filters=32 , kernel_size=[3,3] , padding='same' , activation='relu' , use_bias=True , kernel_initializer='he_normal' , kernel_regularizer=regularizers.l2(1e-4))(conv1)
+        conv2 = Conv2D(filters=32 , kernel_size=[3,3] , padding='same' , activation='relu' , use_bias=True, kernel_initializer='he_normal')(conv1)
         conv2 = BatchNormalization(epsilon=0.0002)(conv2)
         maxpool1 = MaxPooling2D(pool_size=[2,2] , strides=None , padding='valid')(conv2)
-        maxpool1 = Dropout(0.1)(maxpool1)
+        maxpool1 = Dropout(0.3)(maxpool1)
 
-        conv3 = Conv2D(filters=64 , kernel_size=[3,3] , padding='same' , activation='relu' , use_bias=True , kernel_initializer='he_normal' , kernel_regularizer=regularizers.l2(1e-4))(maxpool1)
+        conv3 = Conv2D(filters=64 , kernel_size=[3,3] , padding='same' , activation='relu' , use_bias=True, kernel_initializer='he_normal')(maxpool1)
         conv3 = BatchNormalization(epsilon=0.0002)(conv3)
-        conv4 = Conv2D(filters=64 , kernel_size=[3,3] , padding='same' , activation='relu' , use_bias=True , kernel_initializer='he_normal' , kernel_regularizer=regularizers.l2(1e-4))(conv3)
+        conv4 = Conv2D(filters=64 , kernel_size=[3,3] , padding='same' , activation='relu' , use_bias=True, kernel_initializer='he_normal')(conv3)
         conv4 = BatchNormalization(epsilon=0.0002)(conv4)
         maxpool2 = MaxPooling2D(pool_size=[2,2] , strides=None , padding='valid')(conv4)
-        maxpool2 = Dropout(0.1)(maxpool2)
+        maxpool2 = Dropout(0.3)(maxpool2)
 
-        conv5 = Conv2D(filters=128 , kernel_size=[3,3] , padding='same' , activation='relu' , use_bias=True , kernel_initializer='he_normal' , kernel_regularizer=regularizers.l2(1e-4))(maxpool2)
+        conv5 = Conv2D(filters=128 , kernel_size=[3,3] , padding='same' , activation='relu' , use_bias=True , kernel_initializer='he_normal')(maxpool2)
         conv5 = BatchNormalization(epsilon=0.0002)(conv5)
-        conv6 = Conv2D(filters=128 , kernel_size=[3,3] , padding='same' , activation='relu' , use_bias=True , kernel_initializer='he_normal' , kernel_regularizer=regularizers.l2(1e-4))(conv5)
+        conv6 = Conv2D(filters=128 , kernel_size=[3,3] , padding='same' , activation='relu' , use_bias=True , kernel_initializer='he_normal')(conv5)
         conv6 = BatchNormalization(epsilon=0.0002)(conv6)
         maxpool3 = MaxPooling2D(pool_size=[2,2] , strides=None , padding='valid')(conv6)
-        maxpool3 = Dropout(0.1)(maxpool3)
+        maxpool3 = Dropout(0.3)(maxpool3)
 
-        conv7 = Conv2D(filters=128 , kernel_size=[3, 3], padding='same', activation='relu', use_bias=True , kernel_initializer='he_normal' , kernel_regularizer=regularizers.l2(1e-4))(maxpool3)
+        conv7 = Conv2D(filters=128 , kernel_size=[3, 3], padding='same', activation='relu', use_bias=True , kernel_initializer='he_normal')(maxpool3)
         conv7 = BatchNormalization(epsilon=0.0002)(conv7)
-        # conv8 = Conv2D(filters=128 , kernel_size=[3, 3], padding='same', activation='relu', use_bias=True , kernel_initializer='he_normal' , kernel_regularizer=regularizers.l2(1e-5))(conv7)
-        # conv8 = BatchNormalization(epsilon=0.0002)(conv8)
-        maxpool4 = MaxPooling2D(pool_size=[2, 2], strides=None, padding='valid')(conv7)
-        maxpool4 = Dropout(0.1)(maxpool4)
+        conv8 = Conv2D(filters=128 , kernel_size=[3, 3], padding='same', activation='relu', use_bias=True , kernel_initializer='he_normal')(conv7)
+        conv8 = BatchNormalization(epsilon=0.0002)(conv8)
+        maxpool4 = MaxPooling2D(pool_size=[2, 2], strides=None, padding='valid')(conv8)
+        maxpool4 = Dropout(0.3)(maxpool4)
 
-        reshape = Reshape([100 , 1536])(maxpool4)
+        reshape = Reshape([100, 1536])(maxpool4)
         # dense1 = Dense(units=512 , activation='relu' , use_bias=True , kernel_initializer='he_normal' , kernel_regularizer=regularizers.l2(1e-5))(reshape)
         # dense1 = BatchNormalization(epsilon=0.0002)(dense1)
         # dense1 = Dropout(0.4)(dense1)
@@ -83,15 +83,16 @@ class ModelSpeech():
         # dense1 = BatchNormalization(epsilon=0.0002)(attention_mul)
         # dense1 = Dropout(0.3)(dense1)
 
-        dense2 = Dense(units=512 , activation='relu' , use_bias=True , kernel_initializer='he_normal')(reshape)
-        dense2 = BatchNormalization(epsilon=0.0002)(dense2)
-        dense2 = Dropout(0.2)(dense2)
+        # dense2 = Dense(units=512 , activation='relu' , use_bias=True , kernel_initializer='he_normal')(reshape)
+        # dense2 = BatchNormalization(epsilon=0.0002)(dense2)
+        # dense2 = Dropout(0.2)(dense2)
 
-        dense3 = Dense(units=1024 , activation='relu' , use_bias=True , kernel_initializer='he_normal')(dense2)
+        dense3 = Dense(units=512, use_bias=True , kernel_initializer='he_normal')(reshape)
         dense3 = BatchNormalization(epsilon=0.0002)(dense3)
+        dense3 = Activation(activation='relu')(dense3)
         dense3 = Dropout(0.3)(dense3)
 
-        dense4 = Dense(units=self.MS_OUTPUT_SIZE , use_bias=True , kernel_initializer='he_normal' , kernel_regularizer=regularizers.l2(1e-5))(dense3)
+        dense4 = Dense(units=self.MS_OUTPUT_SIZE , use_bias=True , kernel_initializer='he_normal')(dense3)
         y_pred = Activation(activation='softmax' , name='activation')(dense4)
         model_data = Model(inputs=input_data , outputs=y_pred)
 
@@ -107,8 +108,8 @@ class ModelSpeech():
         # model.summary()
 
         sgd = SGD(lr=0.0005, decay=1e-6, momentum=0.9, nesterov=True, clipnorm=5)
-        ada_d = Adadelta(lr=0.0005 , rho=0.95, epsilon=1e-6)
-        adam = Adam(lr=0.01 , epsilon=1e-6)
+        ada_d = Adadelta(lr=0.001 , rho=0.95, epsilon=1e-6)
+        adam = Adam(lr=0.01)
 
         model.compile(optimizer=adam , loss={'ctc': lambda y_true, y_pred: y_pred})
 
@@ -220,7 +221,7 @@ if __name__ == '__main__':
     import tensorflow as tf
     from keras.backend.tensorflow_backend import set_session
     config = tf.ConfigProto()
-    config.gpu_options.per_process_gpu_memory_fraction = 0.9
+    config.gpu_options.per_process_gpu_memory_fraction = 0.95
     set_session(tf.Session(config=config))
 
     datapath = '/home/zhangwei/PycharmProjects/ASR_Thchs30/data_list/'
